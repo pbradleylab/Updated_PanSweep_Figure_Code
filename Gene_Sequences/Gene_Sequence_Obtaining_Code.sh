@@ -8,7 +8,7 @@ G_100271="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/100271"
 G_102528="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/102528"
 
 Save_Path = #Save path
-Save_Path="/home/majernik.14/UPDATE/"
+Save_Path="/home/majernik.14/Update_PanSweep_Analysis/Updated_PanSweep_Figure_Code/Gene_Sequences"
 SV_G_100060="Gene_sequences_100060.txt"
 SV_G_100078="Gene_sequences_100078.txt"
 SV_G_100271="Gene_sequences_100271.txt"

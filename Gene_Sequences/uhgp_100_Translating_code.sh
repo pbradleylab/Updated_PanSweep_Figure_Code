@@ -2,7 +2,7 @@
 
 #Paths:
 To_UHGP_100="/fs/project/bradley.720/db/uhgp/200624/uhgp-100/uhgp-100"
-Save_location="/home/majernik.14/Updated_PanSweep_Paper_Figure_Code/Uhgp_100_to_Gene_Numbers.tsv"
+Save_location="/home/majernik.14/Update_PanSweep_Analysis/Updated_PanSweep_Figure_Code/Gene_Sequences/Uhgp_100_to_Gene_Numbers.tsv"
 
 
 #To obtain the UHGP-100 cluster_ids per gene 
