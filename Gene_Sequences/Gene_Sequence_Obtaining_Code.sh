@@ -2,10 +2,10 @@
 #Getting the nucleotide sequences for each gene
 
 #Paths#
-G_100060="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/100060"
-G_100078="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/100078"
-G_100271="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/100271"
-G_102528="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/102528"
+G_100060="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/100060/centroids.ffn"
+G_100078="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/100078/centroids.ffn"
+G_100271="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/100271/centroids.ffn"
+G_102528="/fs/project/bradley.720/db/midasdb_uhgg/pangenomes/102528/centroids.ffn"
 
 Save_Path = #Save path
 Save_Path="/home/majernik.14/Update_PanSweep_Analysis/Updated_PanSweep_Figure_Code/Gene_Sequences/"
@@ -19,7 +19,51 @@ PT_G_100078="${Save_Path}${SV_G_100078}"
 PT_G_100271="${Save_Path}${SV_G_100271}"
 PT_G_102528="${Save_Path}${SV_G_102528}"
 
+#######################################################
 
+Genes_100060=("047117_02378"   "047117_02380"   "047117_02376"   "047117_02377"   "041746_02389"   "000216_02074"   "055467_01854"   "047117_02382"   "239171_01612"   "001288_02675"   "063307_00097"   "047117_02379"   "210793_02030"   "041746_02390"   "029873_02068"   "210928_01151")
+
+for gene in "${Genes_100060[@]}"; do
+	G_060=$(grep -A 500 "$gene" $G_100060)| grep -v '^>')
+        echo "\"$gene\",$G_060">> "$PT_G_100060"
+done
+######################################################
+
+Genes_100078=("064037_00369"   "154988_02076"   "016431_01839"   "108644_01598"   "188302_00118"   "151972_01002"   "195023_01285")
+
+
+for gene in "${Genes_100078[@]}"; do
+	G_271=$(grep -A 500 "$gene" $G_100078| grep -v '^>')
+        echo "\"$gene\",$G_271" >> "$PT_G_100078"
+done
+#####################################################
+Genes_100271=("200056_01835"   "032492_02428"   "200056_01834"   "200056_01833"   "200056_01832"   "155662_03633"   "155662_03778")
+
+
+for gene in "${Genes_100271[@]}"; do
+	G_694=$(grep -A 500 "$gene" $G_100271| grep -v '^>') 
+        echo "\"$gene\",$G_694" >> "$PT_G_100271"
+done
+###################################################
+Gene_102528=("064838_00419")
+
+for gene in "${Gene_102528[@]}"; do
+	G_580=$(grep - A 500 "$gene" $G_102528| grep -v '^>') 
+        echo "\"$gene\",$G_580" >> "$PT_G_102528"
+done
+
+
+
+
+
+
+
+
+
+
+
+
+##########################################################################################################
 cd "$G_100060"
 
 sed -n '/047117_02378/,/p/; /047117_02380/,/p/; /047117_02376/,/p/; /047117_02377/,/p/; /041746_02389/,/p/; /000216_02074/,/p/; /055467_01854/,/p/; /047117_02382/,/p/; /239171_01612/,/p/; /001288_02675/,/p/; /063307_00097/,/p/; /047117_02379/,/p/; /210793_02030/,/p/; /041746_02390/,/p/; /029873_02068/,/p/; /210928_01151/,/p/' centroids.ffn >> "$PT_G_100060"
