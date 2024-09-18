@@ -4,7 +4,7 @@ library(readr)
 #################################
 #Paths
 UHGP_90_Path <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Updated_PanSweep_Figure_Code/uhgp_90_eggNOG.tsv"
-
+Path_UHGP_100_trans <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Updated_PanSweep_Figure_Code/Gene_Sequences/Uhgp_100_to_Gene_Numbers.tsv"
 ##################################
 
 uhgp_90_eggNOG <- read_tsv(file = UHGP_90_Path)
@@ -66,3 +66,17 @@ GS1_102528 <- paste0("/", G_102528, "/,/p;")
 GS_102528 <- paste(GS1_102528, collapse = " ")
 cat(GS_102528)
 #/"064838_00419"  /,/p;
+##################################
+UHGP_100 <- read_tsv(file = Path_UHGP_100_trans, col_names = FALSE)
+#Super long b/c GUT_GENOME016431_01839 represents alot of genes
+#Just need to use unique on X1
+UHGP_100_cID <- unique(UHGP_100$X1) 
+
+sep_gg <- function(g){
+  G1 <- paste0("-e \"", gsub("^GUT_GENOME","", g), "\"")
+  G2 <- paste(G1, collaple= " ")
+}
+
+UHGP_100_cln <- UHGP_100_cID %>% sep_gg()
+
+#-e "239171_01612"   -e "041746_02389"   -e "246241_00488"   -e "200056_01834"   -e "016431_01839"   -e "149870_00780"   -e "210811_00453"   -e "200056_01833"   -e "055467_01854"   -e "004689_00515"   -e "058324_00427"   -e "030231_00195"   -e "152024_01664"   -e "063154_01644"   -e "060538_00391"   -e "178030_01661"   -e "017453_01069"   -e "000216_02074"   -e "155662_03633"   -e "099736_00986"   -e "007643_02005"   -e "010616_00971"   -e "063941_02093"   -e "029873_02068"   -e "210928_01151"   -e "063495_00342"   -e "200056_01835"   -e "064838_00419"   -e "047117_02377"   -e "047117_02380"   -e "108644_01598" 
