@@ -9,7 +9,7 @@ G_100271="/fs/project/bradley.720/db/uhgg/uhgg_catalogue/MGYG-HGUT-002/MGYG-HGUT
 G_102528="/fs/project/bradley.720/db/uhgg/uhgg_catalogue/MGYG-HGUT-025/MGYG-HGUT-02528/pan-genome/genes_presence-absence_locus.csv"
 
 #Save path
-Save_Path="/home/majernik.14/Update_PanSweep_Analysis/Updated_PanSweep_Figure_Code/Genome_Analysis"
+Save_Path="/home/majernik.14/Update_PanSweep_Analysis/Updated_PanSweep_Figure_Code/Genome_Analysis/"
 SV_G_100060="Sig_Genes_Pangenomes_100060.csv"
 SV_G_100078="Sig_Genes_Pangenomes_100078.csv"
 SV_G_100271="Sig_Genes_Pangenomes_100271.csv"
