@@ -4,32 +4,33 @@ library(tidyverse)
 
 ################################################################################
 #Paths#
-Base_path <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/MIDAS_Cirrhisis_Analysis/MIDAS_Genome_analysis/"
-Base_sv_path <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/MIDAS_Cirrhisis_Analysis/MIDAS_Genome_analysis"
-
+Base_path <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Updated_PanSweep_Figure_Code/Genome_Analysis/"
+Base_sv_path <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Updated_PanSweep_Figure_Code/Genome_Analysis/"
+Base_path2 <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Updated_PanSweep_Figure_Code/"
 
 G_G100060_path <- paste0(Base_path,"Sig_Genes_Pangenomes_100060.csv")
 G_G100271_path <- paste0(Base_path,"Sig_Genes_Pangenomes_100271.csv")
-G_G102580_path <- paste0(Base_path,"Sig_Genes_Pangenomes_102580.csv")
-G_G103694_path <- paste0(Base_path,"Sig_Genes_Pangenomes_103694.csv")
+G_G100078_path <- paste0(Base_path,"Sig_Genes_Pangenomes_100078.csv")
+G_G102528_path <- paste0(Base_path,"Sig_Genes_Pangenomes_102528.csv")
 
-Egg_load <- paste0(Base_path, "uhgp_90_eggNOG.tsv")
+Egg_load <- paste0(Base_path2, "uhgp_90_eggNOG.tsv")
 
 G_meta_path <- paste0(Base_path, "genomes-all_metadata.tsv")
-
+#Made in code
 Gene_Genome_Type_Counts_path <- paste0(Base_path,"Gene_Genome_Type_Counts.tsv")
+Gene_Genome_Type_Counts_with_Metadata_path <- paste0(Base_path,"Gene_Genome_Type_Counts_with_Metadata.csv")
 genes_with_genome_meta_Cleaned_path <- paste0(Base_path, "genes_with_genome_meta_Cleaned.rds")
 
 ################################################################################
 #Load in Significant genes by genome
 G_G100060 <- read_csv(file = G_G100060_path)
 G_G100271 <- read_csv(file = G_G100271_path)
-G_G102580 <- read_csv(file = G_G102580_path)
-G_G103694 <- read_csv(file = G_G103694_path)
+G_G100078 <- read_csv(file = G_G100078_path)
+G_G102528 <- read_csv(file = G_G102528_path)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Now we will clean, select, and concatenate:
-DFg_n <- c("G_G103694", "G_G102580", "G_G100271", "G_G100060")
-DFs_g <- list(G_G103694, G_G102580, G_G100271, G_G100060) %>% set_names(DFg_n)
+DFg_n <- c("G_G102528", "G_G100078", "G_G100271", "G_G100060")
+DFs_g <- list(G_G102528, G_G100078, G_G100271, G_G100060) %>% set_names(DFg_n)
 #Create gene_id column:
 Dfs_g <- lapply(DFs_g, function(x){
   x <- x %>%
@@ -45,14 +46,14 @@ Gene_Genome_Analysis <- Genes_isolates %>%
                              "Lineage_Shared", "cor_max_species")), by = "Gene_id")
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Isolate or MAG for each Gene:
-DFg_l <- list("G_G103694", "G_G102580", "G_G100271", "G_G100060")
-DFs_g <- list(G_G103694, G_G102580, G_G100271, G_G100060) %>% set_names(DFg_l)
+DFg_l <- list("G_G102528", "G_G100078", "G_G100271", "G_G100060")
+DFs_g <- list(G_G102528, G_G100078, G_G100271, G_G100060) %>% set_names(DFg_l)
 
 DF_g_l <- DFs_g %>%
   lapply(function(x){
     x %>% 
       select(-c(2:15)) %>%
-      
+      #2:15 needed for metadata removal
       pivot_longer(!UHGG_Gene, names_to = "all_Genomes", values_to = "pres_Genes")
   }) %>% setNames(DFg_l)
 
@@ -83,13 +84,21 @@ Gene_Genome_Type_Counts <- Gene_Genome_I_M_Counts_unlist %>%
   na.omit(cols = "Genome_type") %>% pivot_wider(names_from = Genome_type, values_from = count) %>% rename(Gene = UHGG_Gene)
 
 write_tsv(Gene_Genome_Type_Counts, Gene_Genome_Type_Counts_path)
+###########################################################
+#Make Gene_Genome_Type_Counts With Additional Metadata:
+Gene_Genome_Type_Counts_with_Meta <- Gene_Genome_Type_Counts %>% 
+  mutate("Num" = gsub('Gut_Genome', "UHGG", Gene)) %>%
+  left_join(uhgp_90_eggNOG, by=c("Num" = "Gene_id")) %>%
+  group_by(Species_id) %>%
+  select(Gene, Isolate, MAG, Lineage_Shared, Species_id, Species, cor_max_species)
 
+write_csv(Gene_Genome_Type_Counts_with_Meta, Gene_Genome_Type_Counts_with_Metadata_path)
 ###########################################################
 Total_M_I_Counts <- all_genome_meta %>%
   group_by(MGnify_accession, Genome_type) %>%
   summarize(count = n())
 ###########################################################
-genes_with_genome_meta_Cleaned <- genes_with_genome_meta %>%
+genes_with_genome_meta_Cleaned <- genes_with_genome_meta 
   lapply( function(x){
     x%>%
       select(-c("all_Genomes", "pres_Genes"))
@@ -134,9 +143,15 @@ ContValues_non <- ContValues_non[which(!is.na(ContValues_non))]
 non_Df <- cbind("Contamination" = ContValues_non,"Gene" = rep("Non-contaminate", times = length(ContValues_non)))
 ContValues <- rbind.data.frame(con_Df, non_Df)
 ContValues$Contamination <- as.numeric(ContValues$Contamination)
+
+# ggplot(ContValues, aes(x = Contamination, fill = Gene)) + 
+#   geom_histogram(alpha = 0.5, position = "identity") +
+#   theme_minimal()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Remove genes that are in nearly every genome:
-remove <- c("180526_01821", "055467_01854")
+
+remove <- c("064838_00419", "055467_01854", "001288_02675")
+
 Con_Genes <- Gene_Genome_Analysis$Gene_id[!Gene_Genome_Analysis$Lineage_Shared] %>% gsub("UHGG", "", .) %>% setdiff(remove)
 Non_Genes <- Gene_Genome_Analysis$Gene_id[Gene_Genome_Analysis$Lineage_Shared] %>% gsub("UHGG", "", .)
 
@@ -175,6 +190,10 @@ ContValues$Contamination <- as.numeric(ContValues$Contamination)
 #Make a second one with only non-contaminate genes:
 Non_Cont_Values_DF <-as.data.frame(non_Df)
 Non_Cont_Values_DF$Contamination <- as.numeric(Non_Cont_Values_DF$Contamination)
+
+ # ggplot(ContValues, aes(x = Contamination, fill = Gene)) + 
+ #   geom_histogram(alpha = 0.5, position = "identity") +
+ #   theme_minimal()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Make a plot that has 
 p3 <- Non_Cont_Values_DF %>%
@@ -182,13 +201,17 @@ p3 <- Non_Cont_Values_DF %>%
   geom_histogram() +
   geom_vline(aes(xintercept = ContValues_con[1], color = "Contaminate"), linetype = "dashed") +
   geom_vline(aes(xintercept = ContValues_con[2], color = "Contaminate"), linetype = "dashed") +
+  geom_vline(aes(xintercept = ContValues_con[3], color = "Contaminate"), linetype = "dashed") +
+  geom_vline(aes(xintercept = ContValues_con[4], color = "Contaminate"), linetype = "dashed") +
+  geom_vline(aes(xintercept = ContValues_con[5], color = "Contaminate"), linetype = "dashed") +
+  geom_vline(aes(xintercept = ContValues_con[7], color = "Contaminate"), linetype = "dashed") +
+  geom_vline(aes(xintercept = ContValues_con[8], color = "Contaminate"), linetype = "dashed") +
   scale_color_manual(name = "Gene", values = c(Contaminate = "blue")) +
   labs(title = "Percent Contamination in Geneomes",
        x = "Percent Contamination",
        y = "Number of Genomes",
        fill = NULL)
-
 p3
-ggsave(paste0(Base_path,"Percent_Contamination_in_Genomes.tiff"), 
+ggsave(paste0(Base_sv_path,"Percent_Contamination_in_Genomes.tiff"), 
        plot = p3, device = "tiff", width = 7.5,height=5, dpi=300, units = "in")
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
