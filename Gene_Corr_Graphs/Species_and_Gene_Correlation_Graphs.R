@@ -7,7 +7,7 @@ path_for_genomes_all_metadata <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Fo
 
 path_for_Species_Abundance <-"~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/PanSweep_Analysis_Updated/data/species/species_marker_read_counts.tsv"
 
-path_for_sample_metadata <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Metadata/Sample_Metadata/cirrhosis-metadata.tsv"
+path_for_sample_metadata <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Metadata/Sample_Metadata/cirrhosis-metadata_mod.tsv"
 
 path_for_gene_reads <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Updated_PanSweep_Figure_Code/Sig_Gene_reads.rds"
 
