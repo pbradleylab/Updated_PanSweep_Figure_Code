@@ -76,7 +76,7 @@ log_grph_df_meta <- log_Plot %>% left_join(sample_meta, by = c("Run" = "sample")
 
 
 Cont_Gene <- log_grph_df_meta %>% select(c("Run", "Le", "V.atypica", "UHGG047117_02376", "env"))
-Org_Gene <- log_grph_df_meta %>% select(c("Run", "Le", "V.atypica", "UHGG000216_02074", "env"))
+Org_Gene <- log_grph_df_meta %>% select(c("Run", "Le", "V.atypica", "UHGG152466_01649", "env"))
 
 Plot1 <- ggplot(Cont_Gene, aes(x = V.atypica, y = UHGG047117_02376, shape = factor(env))) +
   geom_point(size = 5, color = "orange") +
@@ -114,7 +114,7 @@ Plot2 <- ggplot(Cont_Gene, aes(x = Le, y = UHGG047117_02376, shape = factor(env)
         axis.text.x = element_text(size = 20), 
         axis.text.y = element_text(size = 20))
 
-Plot3 <- ggplot(Org_Gene, aes(x = V.atypica, y = UHGG000216_02074, shape = factor(env))) +
+Plot3 <- ggplot(Org_Gene, aes(x = V.atypica, y = UHGG152466_01649, shape = factor(env))) +
   geom_point(size = 5, color = "orange") +
   geom_smooth(method = "loess", color = "gray28", aes(group = 1)) +
   guides(
@@ -130,7 +130,7 @@ Plot3 <- ggplot(Org_Gene, aes(x = V.atypica, y = UHGG000216_02074, shape = facto
          axis.text.x = element_text(size = 20), 
          axis.text.y = element_text(size = 20))
 
-Plot4 <- ggplot(Org_Gene, aes(x = Le, y = UHGG000216_02074, shape = factor(env))) +
+Plot4 <- ggplot(Org_Gene, aes(x = Le, y = UHGG152466_01649, shape = factor(env))) +
   geom_point(size = 5, color = "deepskyblue4") +
   geom_smooth(method = "loess", color = "gray28", aes(group = 1)) +
   guides(
