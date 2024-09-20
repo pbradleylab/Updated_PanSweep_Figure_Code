@@ -1,42 +1,42 @@
-Gene,Isolate,MAG,Lineage_Shared,Species_id,Species,cor_max_species
-Gut_Genome064838_00419,27,2064,FALSE,102528,Anaerostipes hadrus,Veillonella atypica
-Gut_Genome016431_01839,NA,3,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325
-Gut_Genome063379_01966,4,1413,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325
-Gut_Genome064037_00369,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325
-Gut_Genome108644_01598,NA,9,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325
-Gut_Genome151972_01002,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325
-Gut_Genome154988_02076,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325
-Gut_Genome188302_00118,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325
-Gut_Genome195023_01285,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325
-Gut_Genome032492_02428,NA,1,FALSE,100271,Roseburia inulinivorans,Haemophilus_D parainfluenzae
-Gut_Genome155662_03633,NA,1,FALSE,100271,Roseburia inulinivorans,Haemophilus_D
-Gut_Genome155662_03778,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica
-Gut_Genome200056_01832,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica
-Gut_Genome200056_01833,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica
-Gut_Genome200056_01834,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella
-Gut_Genome200056_01835,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica
-Gut_Genome000216_02074,16,75,TRUE,100060,Lachnospira eligens_B,Lachnospira eligens_B
-Gut_Genome029873_02068,NA,1,FALSE,100060,Lachnospira eligens_B,Streptococcus vestibularis
-Gut_Genome032185_00468,21,2930,FALSE,100060,Lachnospira eligens_B,Veillonella sp002959755
-Gut_Genome041746_02388,21,2403,FALSE,100060,Lachnospira eligens_B,Veillonella
-Gut_Genome041746_02389,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
-Gut_Genome041746_02390,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
-Gut_Genome047117_02375,6,243,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
-Gut_Genome047117_02376,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
-Gut_Genome047117_02377,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
-Gut_Genome047117_02378,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
-Gut_Genome047117_02379,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
-Gut_Genome047117_02380,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella
-Gut_Genome047117_02381,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
-Gut_Genome047117_02382,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
-Gut_Genome047117_02383,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
-Gut_Genome055467_01854,21,2893,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
-Gut_Genome063307_00097,NA,2,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325
-Gut_Genome148794_01632,NA,3,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325
-Gut_Genome152466_01649,19,2568,TRUE,100060,Lachnospira eligens_B,Lachnospira eligens_B
-Gut_Genome181581_00481,NA,1,FALSE,100060,Lachnospira eligens_B,Haemophilus_D parainfluenzae
-Gut_Genome192308_01194,21,2862,FALSE,100060,Lachnospira eligens_B,Veillonella sp002959755
-Gut_Genome210793_02030,5,311,FALSE,100060,Lachnospira eligens_B,Veillonella parvula
-Gut_Genome210928_01151,NA,1,FALSE,100060,Lachnospira eligens_B,Streptococcus sp001556435
-Gut_Genome228006_01743,NA,3,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325
-Gut_Genome258864_02598,21,2809,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325
+Gene,Isolate,MAG,Lineage_Shared,Species_id,Species,cor_max_species,BLAST,Send to PB
+Gut_Genome064838_00419,27,2064,FALSE,102528,Anaerostipes hadrus,Veillonella atypica,Disagree*,
+Gut_Genome016431_01839,NA,3,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325,Difficult to call,Y
+Gut_Genome063379_01966,4,1413,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325,No Results,
+Gut_Genome064037_00369,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325,Agree,
+Gut_Genome108644_01598,NA,9,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325,Difficult to call,Y
+Gut_Genome151972_01002,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325,No Results,
+Gut_Genome154988_02076,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325,No Results,
+Gut_Genome188302_00118,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325,Difficult to call,Y
+Gut_Genome195023_01285,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325,No Results,
+Gut_Genome032492_02428,NA,1,FALSE,100271,Roseburia inulinivorans,Haemophilus_D parainfluenzae,Agree,
+Gut_Genome155662_03633,NA,1,FALSE,100271,Roseburia inulinivorans,Haemophilus_D,Agree (Contamination - from veillonella),Y
+Gut_Genome155662_03778,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica,Agree,
+Gut_Genome200056_01832,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica,Agree,
+Gut_Genome200056_01833,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica,Agree,
+Gut_Genome200056_01834,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella,Agree,
+Gut_Genome200056_01835,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica,Agree,
+Gut_Genome000216_02074,16,75,TRUE,100060,Lachnospira eligens_B,Lachnospira eligens_B,Agree,Highly conserved Lachno
+Gut_Genome029873_02068,NA,1,FALSE,100060,Lachnospira eligens_B,Streptococcus vestibularis,Agree(Phage most likely),Y
+Gut_Genome032185_00468,21,2930,FALSE,100060,Lachnospira eligens_B,Veillonella sp002959755,Chimeric (Le and Va),Y
+Gut_Genome041746_02388,21,2403,FALSE,100060,Lachnospira eligens_B,Veillonella,Chimeric (Le and Va),Y
+Gut_Genome041746_02389,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium,Agree,
+Gut_Genome041746_02390,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica,Agree,
+Gut_Genome047117_02375,6,243,FALSE,100060,Lachnospira eligens_B,Veillonella atypica,Agree,
+Gut_Genome047117_02376,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica,Agree,
+Gut_Genome047117_02377,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica,Agree,
+Gut_Genome047117_02378,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica,Agree,
+Gut_Genome047117_02379,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium,Agree,
+Gut_Genome047117_02380,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella,Agree,
+Gut_Genome047117_02381,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica,Agree,
+Gut_Genome047117_02382,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium,Agree,
+Gut_Genome047117_02383,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica,Agree,
+Gut_Genome055467_01854,21,2893,FALSE,100060,Lachnospira eligens_B,Veillonella atypica,Agree**,Y
+Gut_Genome063307_00097,NA,2,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325,No Results,
+Gut_Genome148794_01632,NA,3,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325,No Results,
+Gut_Genome152466_01649,19,2568,TRUE,100060,Lachnospira eligens_B,Lachnospira eligens_B,Difficult to call,Y
+Gut_Genome181581_00481,NA,1,FALSE,100060,Lachnospira eligens_B,Haemophilus_D parainfluenzae,Agree,
+Gut_Genome192308_01194,21,2862,FALSE,100060,Lachnospira eligens_B,Veillonella sp002959755,Chimeric (Le and Va),Y
+Gut_Genome210793_02030,5,311,FALSE,100060,Lachnospira eligens_B,Veillonella parvula,No Results,
+Gut_Genome210928_01151,NA,1,FALSE,100060,Lachnospira eligens_B,Streptococcus sp001556435,Agree,
+Gut_Genome228006_01743,NA,3,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325,Difficult to call,Y
+Gut_Genome258864_02598,21,2809,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325,Agree,
