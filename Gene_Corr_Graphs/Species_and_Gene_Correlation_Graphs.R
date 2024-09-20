@@ -187,9 +187,9 @@ Graph_tbl102528 <- Slct_Gns102528 %>% left_join(Species_Abd_join, by = 'Run') %>
 Gene_100060 <- Species_for_graph %>% filter(Species == 100060)
 Gene_V_100060 <- Gene_100060$Gene
                     #Make graphs for L. eligens (100060)#
-map(Gene_V_100060, function(g){
+po60 <-map(Gene_V_100060, function(g){
   #Plot_name <- paste(g, "_Plot_orig")
-   p <-ggplot(Graph_tbl100060, aes(x = !!sym("100060"), y = !!sym(g), shape = factor(env))) +
+   p<-ggplot(Graph_tbl100060, aes(x = !!sym("100060"), y = !!sym(g), shape = factor(env))) +
      geom_point(size = 2, color = "deepskyblue4") +
      geom_smooth(method = "loess", color = "gray28", aes(group = 1)) +
      guides(
@@ -209,14 +209,15 @@ map(Gene_V_100060, function(g){
            axis.title.x = element_text(size = 5),
            axis.title.y = element_text(size = 5)
            )
-   ggsave(filename = paste0(g, "_Org_Sp_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
+   return(p)
+   #ggsave(filename = paste0(g, "_Org_Sp_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
 })
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
                 #Make a vector of gene names by species#
 Gene_100078 <- Species_for_graph %>% filter(Species == 100078)
 Gene_V_100078 <- Gene_100078$Gene
                   #Make graphs for Lachnospira rogosae (100078)#
-map(Gene_V_100078, function(g){
+po78 <-map(Gene_V_100078, function(g){
   #Plot_name <- paste(g, "_Plot_orig")
   p <- ggplot(Graph_tbl100078, aes(x = !!sym("100078"), y = !!sym(g), shape = factor(env))) +
     geom_point(size = 2, color = "deepskyblue4") +
@@ -238,14 +239,15 @@ map(Gene_V_100078, function(g){
           axis.title.x = element_text(size = 5),
           axis.title.y = element_text(size = 5)
           )
-  ggsave(filename = paste0(g, "_Org_Sp_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
+  return(p)
+  #ggsave(filename = paste0(g, "_Org_Sp_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
 })
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Make a vector of gene names by species#
 Gene_100271 <- Species_for_graph %>% filter(Species == 100271)
 Gene_V_100271 <- Gene_100271$Gene
 #Make graphs for Roseburia inulinivorans (100271)#
-map(Gene_V_100271, function(g){
+po271 <- map(Gene_V_100271, function(g){
   #Plot_name <- paste(g, "_Plot_orig")
   p <- ggplot(Graph_tbl100271, aes(x = !!sym("100271"), y = !!sym(g), shape = factor(env))) +
     geom_point(size = 2, color = "deepskyblue4") +
@@ -267,14 +269,15 @@ map(Gene_V_100271, function(g){
           axis.title.x = element_text(size = 5),
           axis.title.y = element_text(size = 5)
           )
-  ggsave(filename = paste0(g, "_Org_Sp_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
+  return(p)
+  #ggsave(filename = paste0(g, "_Org_Sp_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
 })
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Make a vector of gene names by species#
 Gene_102528 <- Species_for_graph %>% filter(Species == 102528)
 Gene_V_102528 <- Gene_102528$Gene
 #Make graphs for "Anaerostipes hadrus" (102528)#
-map(Gene_V_102528, function(g){
+po2528 <-map(Gene_V_102528, function(g){
   #Plot_name <- paste(g, "_Plot_orig")
   p <- ggplot(Graph_tbl102528, aes(x = !!sym("102528"), y = !!sym(g), shape = factor(env))) +
     geom_point(size = 2, color = "deepskyblue4") +
@@ -296,7 +299,8 @@ map(Gene_V_102528, function(g){
           axis.title.x = element_text(size = 5),
           axis.title.y = element_text(size = 5)
           )
-  ggsave(filename = paste0(g, "_Org_Sp_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
+  return(p)
+  #ggsave(filename = paste0(g, "_Org_Sp_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
 })
 ################################################################################
 #Make correlating species to gene graphs
@@ -323,7 +327,7 @@ Graph_tbl102528 <- Slct_Gns102528 %>% left_join(Species_Abd_join, by = 'Run') %>
   left_join(sample_meta, by = c("Run" = "sample"))
 
 #Make the plots for the correlated species vs gene reads
-map2(Gene_100060$Species_Cor, Gene_100060$Gene, function(.x, .y){
+pc60 <- map2(Gene_100060$Species_Cor, Gene_100060$Gene, function(.x, .y){
   #Plot_name <- paste(g, "_Plot_orig")
   Sp_Name <- meta_genome_sep_taxa %>% filter(species_id == .x) %>% select("Species") %>% as.character()
   p <- ggplot(Graph_tbl100060, aes(x = !!sym(.x), y = !!sym(.y), shape = factor(env))) +
@@ -346,10 +350,11 @@ map2(Gene_100060$Species_Cor, Gene_100060$Gene, function(.x, .y){
           axis.title.x = element_text(size = 5),
           axis.title.y = element_text(size = 5)
           )
-  ggsave(filename = paste0(.y, "_max_correlation_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
+  return(p)
+  #ggsave(filename = paste0(.y, "_max_correlation_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
 })
 
-map2(Gene_100271$Species_Cor, Gene_100271$Gene, function(.x, .y){
+pc271 <- map2(Gene_100271$Species_Cor, Gene_100271$Gene, function(.x, .y){
   #Plot_name <- paste(g, "_Plot_orig")
   Sp_Name <- meta_genome_sep_taxa %>% filter(species_id == .x) %>% select("Species") %>% as.character()
   p <- ggplot(Graph_tbl100271, aes(x = !!sym(.x), y = !!sym(.y), shape = factor(env))) +
@@ -372,10 +377,11 @@ map2(Gene_100271$Species_Cor, Gene_100271$Gene, function(.x, .y){
           axis.title.x = element_text(size = 5),
           axis.title.y = element_text(size = 5)
           )
-  ggsave(filename = paste0(.y, "_max_correlation_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
+  return(p)
+  #ggsave(filename = paste0(.y, "_max_correlation_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
 })
 
-Cor_plt_100078 <- map2(Gene_100078$Species_Cor, Gene_100078$Gene, function(.x, .y){
+pc78 <- Cor_plt_100078 <- map2(Gene_100078$Species_Cor, Gene_100078$Gene, function(.x, .y){
   #Plot_name <- paste(g, "_Plot_orig")
   Sp_Name <- meta_genome_sep_taxa %>% filter(species_id == .x) %>% select("Species") %>% as.character()
  p <- ggplot(Graph_tbl100078, aes(x = !!sym(.x), y = !!sym(.y), shape = factor(env))) +
@@ -398,10 +404,11 @@ Cor_plt_100078 <- map2(Gene_100078$Species_Cor, Gene_100078$Gene, function(.x, .
           axis.title.x = element_text(size = 5),
           axis.title.y = element_text(size = 5)
           )
- ggsave(filename = paste0(.y, "_max_correlation_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
+ return(p)
+ #ggsave(filename = paste0(.y, "_max_correlation_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
 })
 
-map2(Gene_102528$Species_Cor, Gene_102528$Gene, function(.x, .y){
+pc2528 <- map2(Gene_102528$Species_Cor, Gene_102528$Gene, function(.x, .y){
   Sp_Name <- meta_genome_sep_taxa %>% filter(species_id == .x) %>% select("Species") %>% as.character()
   p <- ggplot(Graph_tbl102528, aes(x = !!sym(.x), y = !!sym(.y), shape = factor(env))) +
     geom_point(size = 2, color = "orange") +
@@ -423,5 +430,120 @@ map2(Gene_102528$Species_Cor, Gene_102528$Gene, function(.x, .y){
           axis.title.x = element_text(size = 5),
           axis.title.y = element_text(size = 5)
           )
-  ggsave(filename = paste0(.y, "_max_correlation_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
+  return(p)
+  #ggsave(filename = paste0(.y, "_max_correlation_Graph.tiff"), plot = p, device = "tiff", width = 2 ,height= 2.0, dpi=300, units = "in")
 })
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+library(patchwork)
+#Make all corrplot figures
+pg1 <- list(
+  po60[[1]],
+  pc60[[1]],
+  po60[[2]],
+  pc60[[2]],
+  po60[[3]],
+  pc60[[3]],
+  po60[[4]],
+  pc60[[4]],
+  po60[[5]],
+  pc60[[5]],
+  po60[[6]],
+  pc60[[6]],
+  po60[[7]],
+  pc60[[7]],
+  po60[[8]],
+  pc60[[8]],
+  po60[[9]],
+  pc60[[9]],
+  po60[[10]],
+  pc60[[10]]
+)
+
+Pg1 <- patchwork::wrap_plots(pg1, nrow = 5, ncol = 4, byrow = TRUE)
+ggsave(filename ="Pg1.pdf", plot = Pg1, width = 7.5, height = 10, units = "in")
+
+pg2 <- list(
+  po60[[11]],
+  pc60[[11]],
+  po60[[12]],
+  pc60[[12]],
+  po60[[13]],
+  pc60[[13]],
+  po60[[14]],
+  pc60[[14]],
+  po60[[15]],
+  pc60[[15]],
+  po60[[16]],
+  pc60[[16]],
+  po60[[17]],
+  pc60[[17]],
+  po60[[18]],
+  pc60[[18]],
+  po60[[19]],
+  pc60[[19]],
+  po60[[20]],
+  pc60[[20]]
+)
+
+Pg2 <- patchwork::wrap_plots(pg2, nrow = 5, ncol = 4, byrow = TRUE)
+ggsave(filename ="Pg2.pdf", plot = Pg2, width = 7.5, height = 10, units = "in")
+
+pg3 <- list(
+  po60[[21]],
+  pc60[[21]],
+  po60[[22]],
+  pc60[[22]],
+  po60[[23]],
+  pc60[[23]],
+  po60[[24]],
+  pc60[[24]],
+  po60[[25]],
+  pc60[[25]]
+)
+
+Pg3 <- patchwork::wrap_plots(pg3, nrow = 5, ncol = 4, byrow = TRUE)
+ggsave(filename ="Pg3.pdf", plot = Pg3, width = 7.5, height = 10, units = "in")
+
+pg4 <- list(
+  po78[[1]],
+  pc78[[1]],
+  po78[[2]],
+  pc78[[2]],
+  po78[[3]],
+  pc78[[3]],
+  po78[[4]],
+  pc78[[4]],
+  po78[[5]],
+  pc78[[5]],
+  po78[[6]],
+  pc78[[6]],
+  po78[[7]],
+  pc78[[7]],
+  po78[[8]],
+  pc78[[8]]
+)
+
+Pg4 <- patchwork::wrap_plots(pg4, nrow = 5, ncol = 4, byrow = TRUE)
+ggsave(filename ="Pg4.pdf", plot = Pg4, width = 7.5, height = 10, units = "in")
+
+pg5 <- list(
+  po271[[1]],
+  pc271[[1]],
+  po271[[2]],
+  pc271[[2]],
+  po271[[3]],
+  pc271[[3]],
+  po271[[4]],
+  pc271[[4]],
+  po271[[5]],
+  pc271[[5]],
+  po271[[6]],
+  pc271[[6]],
+  po271[[7]],
+  pc271[[7]],
+  po2528[[1]],
+  pc2528[[1]]
+)
+
+Pg5 <- patchwork::wrap_plots(pg5, nrow = 5, ncol = 4, byrow = TRUE)
+ggsave(filename ="Pg5.pdf", plot = Pg5, width = 7.5, height = 10, units = "in")
