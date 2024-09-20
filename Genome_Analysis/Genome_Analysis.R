@@ -160,78 +160,27 @@ ContValues$Contamination <- as.numeric(ContValues$Contamination)
         x = "Percent Contamination",
         y = "Number of Genomes")
 ################################################################################ 
- ggplot(ContValues, aes(Contamination, fill = Gene)) +
-   geom_histogram(alpha = 0.5, aes(y =  ..density..), position = 'identity')+
-   labs(title = "Percent Contamination in Geneomes",
+ # ggplot(ContValues, aes(Contamination, fill = Gene)) +
+ #   geom_histogram(alpha = 0.5, aes(y =  ..density..), position = 'identity')+
+ #   labs(title = "Percent Contamination in Geneomes",
+ #        x = "Percent Contamination",
+ #        y = "Number of Genomes")
+ 
+ ContValues$Gene <- factor(ContValues$Gene, levels = c("Non-contaminate", "Contaminate")) 
+ 
+p3 <- ggplot(ContValues, aes(Contamination, fill = Gene, color = Gene)) +
+  geom_density(alpha = 0.7, aes(y =  ..density..), position = 'identity')+
+   labs(title = "Percent Contamination in Genomes that Contain Significant Genes",
         x = "Percent Contamination",
-        y = "Number of Genomes")
+        y = "Number of Genomes") +
+   scale_fill_manual(name = "Lineage Test",
+                     values = c("Contaminate" = "orange", "Non-contaminate" = "deepskyblue4"),
+                     labels = c("Pass", "Fail")
+                     ) +
+   scale_color_manual(name = "Lineage Test",
+     values = c("Contaminate" = "orange3", "Non-contaminate" = "deepskyblue4"),
+     labels = c("Pass", "Fail")
+   )
  
- 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#Remove genes that are in nearly every genome:
-
-remove <- c("064838_00419", "055467_01854", "001288_02675")
-
-Con_Genes <- Gene_Genome_Analysis$Gene_id[!Gene_Genome_Analysis$Lineage_Shared] %>% gsub("UHGG", "", .) %>% setdiff(remove)
-Non_Genes <- Gene_Genome_Analysis$Gene_id[Gene_Genome_Analysis$Lineage_Shared] %>% gsub("UHGG", "", .)
-
-DeRep_genes_with_genome_meta <- genes_with_genome_meta %>%
-  lapply(function(x){
-    x %>%
-      distinct(present_Genomes, .keep_all = TRUE)
-  })  
-
-Cont_val_total <- c()
-ContValues_con_l <- DeRep_genes_with_genome_meta %>%
-  lapply(function(x){
-    Cont_val <- x %>%
-      filter(x$UHGG_Gene %in% Con_Genes) %>%
-      pull(Contamination)
-    Cont_val_total <- rbind(Cont_val_total, Cont_val)
-    return(Cont_val_total)
-  })
-ContValues_non_l <- DeRep_genes_with_genome_meta %>%
-  lapply(function(x){
-    Cont_val <- x %>%
-      filter(x$UHGG_Gene %in% Non_Genes) %>%
-      pull(Contamination)
-    Cont_val_total <- rbind(Cont_val_total, Cont_val)
-    return(Cont_val_total)
-  })
-#Extract all of the values into a single vector:
-ContValues_con <- ContValues_con_l %>% unlist() %>% as.vector()
-ContValues_con <- ContValues_con[which(!is.na(ContValues_con))]
-con_Df <- cbind("Contamination" = ContValues_con,"Gene" = rep("Contaminate", times = length(ContValues_con)))
-ContValues_non <- ContValues_non_l %>% unlist() %>% as.vector()
-ContValues_non <- ContValues_non[which(!is.na(ContValues_non))]
-non_Df <- cbind("Contamination" = ContValues_non,"Gene" = rep("Non-contaminate", times = length(ContValues_non)))
-ContValues <- rbind.data.frame(con_Df, non_Df)
-ContValues$Contamination <- as.numeric(ContValues$Contamination)
-#Make a second one with only non-contaminate genes:
-Non_Cont_Values_DF <-as.data.frame(non_Df)
-Non_Cont_Values_DF$Contamination <- as.numeric(Non_Cont_Values_DF$Contamination)
-
- # ggplot(ContValues, aes(x = Contamination, fill = Gene)) + 
- #   geom_histogram(alpha = 0.5, position = "identity") +
- #   theme_minimal()
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#Make a plot that has 
-p3 <- Non_Cont_Values_DF %>%
-  ggplot(aes(x=Contamination, fill=Gene)) +
-  geom_histogram() +
-  geom_vline(aes(xintercept = ContValues_con[1], color = "Contaminate"), linetype = "dashed") +
-  geom_vline(aes(xintercept = ContValues_con[2], color = "Contaminate"), linetype = "dashed") +
-  geom_vline(aes(xintercept = ContValues_con[3], color = "Contaminate"), linetype = "dashed") +
-  geom_vline(aes(xintercept = ContValues_con[4], color = "Contaminate"), linetype = "dashed") +
-  geom_vline(aes(xintercept = ContValues_con[5], color = "Contaminate"), linetype = "dashed") +
-  geom_vline(aes(xintercept = ContValues_con[7], color = "Contaminate"), linetype = "dashed") +
-  geom_vline(aes(xintercept = ContValues_con[8], color = "Contaminate"), linetype = "dashed") +
-  scale_color_manual(name = "Gene", values = c(Contaminate = "blue")) +
-  labs(title = "Percent Contamination in Geneomes",
-       x = "Percent Contamination",
-       y = "Number of Genomes",
-       fill = NULL)
-p3
-ggsave(paste0(Base_sv_path,"Percent_Contamination_in_Genomes.tiff"), 
-       plot = p3, device = "tiff", width = 7.5,height=5, dpi=300, units = "in")
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+ ggsave(paste0(Base_sv_path,"Percent_Contamination_in_Genomes.tiff"), 
+        plot = p3, device = "tiff", width = 7.5,height=5, dpi=300, units = "in")
