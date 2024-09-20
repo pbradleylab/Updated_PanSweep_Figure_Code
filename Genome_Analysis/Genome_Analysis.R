@@ -1,6 +1,7 @@
 #Genome Analysis
 library(readr)
 library(tidyverse)
+library(ggplot2)
 
 ################################################################################
 #Paths#
@@ -19,9 +20,12 @@ G_meta_path <- paste0(Base_path, "genomes-all_metadata.tsv")
 #Made in code
 Gene_Genome_Type_Counts_path <- paste0(Base_path,"Gene_Genome_Type_Counts.tsv")
 Gene_Genome_Type_Counts_with_Metadata_path <- paste0(Base_path,"Gene_Genome_Type_Counts_with_Metadata.csv")
+Gene_Genome_Type_Counts_with_Metadata_eggNOG_path <- paste0(Base_path,"Gene_Genome_Type_Counts_with_Metadata_eggNOG.csv")
 genes_with_genome_meta_Cleaned_path <- paste0(Base_path, "genes_with_genome_meta_Cleaned.rds")
 
 ################################################################################
+#Load in eggNOG data:
+uhgp_90_eggNOG <- read_tsv(file = Egg_load)
 #Load in Significant genes by genome
 G_G100060 <- read_csv(file = G_G100060_path)
 G_G100271 <- read_csv(file = G_G100271_path)
@@ -98,12 +102,18 @@ Total_M_I_Counts <- all_genome_meta %>%
   group_by(MGnify_accession, Genome_type) %>%
   summarize(count = n())
 ###########################################################
-genes_with_genome_meta_Cleaned <- genes_with_genome_meta 
+genes_with_genome_meta_Cleaned <- genes_with_genome_meta %>%
   lapply( function(x){
     x%>%
       select(-c("all_Genomes", "pres_Genes"))
   })
 write_rds(genes_with_genome_meta_Cleaned, genes_with_genome_meta_Cleaned_path)
+############################################################
+Gene_Genome_Type_Counts_with_Meta_eggNOG <- Gene_Genome_Type_Counts %>% 
+  mutate("Num" = gsub('Gut_Genome', "UHGG", Gene)) %>%
+  left_join(uhgp_90_eggNOG, by=c("Num" = "Gene_id")) %>%
+  group_by(Species_id)
+write_csv(Gene_Genome_Type_Counts_with_Meta_eggNOG, Gene_Genome_Type_Counts_with_Metadata_eggNOG_path )
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Create list on contaminate and non-contaminate genes:
 Con_Genes <- Gene_Genome_Analysis$Gene_id[!Gene_Genome_Analysis$Lineage_Shared] %>% gsub("UHGG", "", .)
@@ -144,9 +154,19 @@ non_Df <- cbind("Contamination" = ContValues_non,"Gene" = rep("Non-contaminate",
 ContValues <- rbind.data.frame(con_Df, non_Df)
 ContValues$Contamination <- as.numeric(ContValues$Contamination)
 
-# ggplot(ContValues, aes(x = Contamination, fill = Gene)) + 
-#   geom_histogram(alpha = 0.5, position = "identity") +
-#   theme_minimal()
+ ggplot(ContValues, aes(x = Contamination, fill = Gene)) + 
+   geom_histogram(alpha = 0.5, position = "identity") +
+   labs(title = "Percent Contamination in Geneomes",
+        x = "Percent Contamination",
+        y = "Number of Genomes")
+################################################################################ 
+ ggplot(ContValues, aes(Contamination, fill = Gene)) +
+   geom_histogram(alpha = 0.5, aes(y =  ..density..), position = 'identity')+
+   labs(title = "Percent Contamination in Geneomes",
+        x = "Percent Contamination",
+        y = "Number of Genomes")
+ 
+ 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Remove genes that are in nearly every genome:
 
