@@ -1,5 +1,14 @@
 #!/bin/bash
 
+
+#SBATCH --job-name=AA_UHGP_100_Sequences
+#SBATCH --time=12:00:00
+#SBATCH --ntasks=1        
+#SBATCH --cpus-per-task=1 
+#SBATCH --mail-type=ALL
+ 
+
+
 #Code to get aa sequence for each gene 
 #Paths:
 To_UHGP_100="/fs/project/bradley.720/db/uhgp/200624/uhgp-100"
