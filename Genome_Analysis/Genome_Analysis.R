@@ -154,11 +154,11 @@ non_Df <- cbind("Contamination" = ContValues_non,"Gene" = rep("Non-contaminate",
 ContValues <- rbind.data.frame(con_Df, non_Df)
 ContValues$Contamination <- as.numeric(ContValues$Contamination)
 
- ggplot(ContValues, aes(x = Contamination, fill = Gene)) + 
-   geom_histogram(alpha = 0.5, position = "identity") +
-   labs(title = "Percent Contamination in Geneomes",
-        x = "Percent Contamination",
-        y = "Number of Genomes")
+ # ggplot(ContValues, aes(x = Contamination, fill = Gene)) + 
+ #   geom_histogram(alpha = 0.5, position = "identity") +
+ #   labs(title = "Percent Contamination in Geneomes",
+ #        x = "Percent Contamination",
+ #        y = "Number of Genomes")
 ################################################################################ 
  # ggplot(ContValues, aes(Contamination, fill = Gene)) +
  #   geom_histogram(alpha = 0.5, aes(y =  ..density..), position = 'identity')+
@@ -184,3 +184,11 @@ p3 <- ggplot(ContValues, aes(Contamination, fill = Gene, color = Gene)) +
  
  ggsave(paste0(Base_sv_path,"Percent_Contamination_in_Genomes.tiff"), 
         plot = p3, device = "tiff", width = 7.5,height=5, dpi=300, units = "in")
+ ###############################################################################
+ Genome_summart <- ContValues %>% 
+   group_by(Gene) %>%
+   summarise(
+     min = min(Contamination),
+     max = max(Contamination),
+     mean = mean(Contamination)
+   )

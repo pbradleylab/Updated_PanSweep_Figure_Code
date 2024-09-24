@@ -7,6 +7,8 @@ G_100060="/fs/project/bradley.720/db/uhgg/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT
 G_100078="/fs/project/bradley.720/db/uhgg/uhgg_catalogue/MGYG-HGUT-000/MGYG-HGUT-00078/pan-genome/genes_presence-absence_locus.csv"
 G_100271="/fs/project/bradley.720/db/uhgg/uhgg_catalogue/MGYG-HGUT-002/MGYG-HGUT-00271/pan-genome/genes_presence-absence_locus.csv"
 G_102528="/fs/project/bradley.720/db/uhgg/uhgg_catalogue/MGYG-HGUT-025/MGYG-HGUT-02528/pan-genome/genes_presence-absence_locus.csv"
+G_100217="/fs/project/bradley.720/db/uhgg/uhgg_catalogue/MGYG-HGUT-002/MGYG-HGUT-00217/pan-genome/genes_presence-absence_locus.csv"
+G_101380="/fs/project/bradley.720/db/uhgg/uhgg_catalogue/MGYG-HGUT-013/MGYG-HGUT-01380/pan-genome/genes_presence-absence_locus.csv"
 
 #Save path
 Save_Path="/home/majernik.14/Update_PanSweep_Analysis/Updated_PanSweep_Figure_Code/Genome_Analysis/"
@@ -14,11 +16,15 @@ SV_G_100060="Sig_Genes_Pangenomes_100060.csv"
 SV_G_100078="Sig_Genes_Pangenomes_100078.csv"
 SV_G_100271="Sig_Genes_Pangenomes_100271.csv"
 SV_G_102528="Sig_Genes_Pangenomes_102528.csv"
+SV_G_100217="Sig_Genes_Pangenomes_100217.csv"
+SV_G_101380="Sig_Genes_Pangenomes_101380.csv"
 
 PT_G_100060="${Save_Path}${SV_G_100060}"
 PT_G_100078="${Save_Path}${SV_G_100078}"
 PT_G_100271="${Save_Path}${SV_G_100271}"
 PT_G_102528="${Save_Path}${SV_G_102528}"
+PT_G_100217="${Save_Path}${SV_G_100217}"
+PT_G_101380="${Save_Path}${SV_G_101380}"
 
 #######################################################
 
@@ -63,5 +69,25 @@ for gene in "${Gene_102528[@]}"; do
 	G_580=$(grep "$gene" $G_102528) 
         echo "\"$gene\",$G_580" >> "$PT_G_102528"
 done
+#####################################################
+Genes_101380=("200056_01835"   "032492_02428"   "200056_01833"   "200056_01834"   "200056_01832"   "155662_03633"   "155662_03778")
 
+H694=$(head -n 1 $G_101380) 
+echo "\"UHGG_Gene\",$H694" > "$PT_G_101380"
+
+for gene in "${Genes_101380[@]}"; do
+	G_694=$(grep "$gene" $G_101380) 
+        echo "\"$gene\",$G_694" >> "$PT_G_101380"
+done
+###################################################
+Genes_100217=("200056_01835"   "032492_02428"   "200056_01833"   "200056_01834"   "200056_01832"   "155662_03633"   "155662_03778")
+
+H694=$(head -n 1 $G_100217) 
+echo "\"UHGG_Gene\",$H694" > "$PT_G_100217"
+
+for gene in "${Genes_100217[@]}"; do
+	G_694=$(grep "$gene" $G_100217) 
+        echo "\"$gene\",$G_694" >> "$PT_G_100217"
+done
+###################################################
 
