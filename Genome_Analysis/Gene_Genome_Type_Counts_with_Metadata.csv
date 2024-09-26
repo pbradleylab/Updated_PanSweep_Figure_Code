@@ -10,14 +10,14 @@ Gut_Genome188302_00118,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316
 Gut_Genome195023_01285,NA,1,TRUE,100078,Lachnospira rogosae,Lachnospira sp900316325
 Gut_Genome032492_02428,NA,1,FALSE,100271,Roseburia inulinivorans,Haemophilus_D parainfluenzae
 Gut_Genome155662_03633,NA,1,FALSE,100271,Roseburia inulinivorans,Haemophilus_D
-Gut_Genome155662_03778,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica
+Gut_Genome155662_03778,NA,1,FALSE,100271,Roseburia inulinivorans,Haemophilus_D
 Gut_Genome200056_01832,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica
 Gut_Genome200056_01833,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica
 Gut_Genome200056_01834,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella
 Gut_Genome200056_01835,NA,1,FALSE,100271,Roseburia inulinivorans,Veillonella atypica
 Gut_Genome000216_02074,16,75,TRUE,100060,Lachnospira eligens_B,Lachnospira eligens_B
-Gut_Genome029873_02068,NA,1,FALSE,100060,Lachnospira eligens_B,Streptococcus vestibularis
-Gut_Genome032185_00468,21,2930,FALSE,100060,Lachnospira eligens_B,Veillonella sp002959755
+Gut_Genome029873_02068,NA,1,FALSE,100060,Lachnospira eligens_B,Streptococcus parasanguinis
+Gut_Genome032185_00468,21,2930,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
 Gut_Genome041746_02388,21,2403,FALSE,100060,Lachnospira eligens_B,Veillonella
 Gut_Genome041746_02389,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
 Gut_Genome041746_02390,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
@@ -27,15 +27,15 @@ Gut_Genome047117_02377,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypi
 Gut_Genome047117_02378,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
 Gut_Genome047117_02379,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
 Gut_Genome047117_02380,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella
-Gut_Genome047117_02381,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
+Gut_Genome047117_02381,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
 Gut_Genome047117_02382,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
-Gut_Genome047117_02383,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
+Gut_Genome047117_02383,NA,1,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
 Gut_Genome055467_01854,21,2893,FALSE,100060,Lachnospira eligens_B,Veillonella atypica
 Gut_Genome063307_00097,NA,2,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325
 Gut_Genome148794_01632,NA,3,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325
 Gut_Genome152466_01649,19,2568,TRUE,100060,Lachnospira eligens_B,Lachnospira eligens_B
 Gut_Genome181581_00481,NA,1,FALSE,100060,Lachnospira eligens_B,Haemophilus_D parainfluenzae
-Gut_Genome192308_01194,21,2862,FALSE,100060,Lachnospira eligens_B,Veillonella sp002959755
+Gut_Genome192308_01194,21,2862,FALSE,100060,Lachnospira eligens_B,Veillonella infantium
 Gut_Genome210793_02030,5,311,FALSE,100060,Lachnospira eligens_B,Veillonella parvula
 Gut_Genome210928_01151,NA,1,FALSE,100060,Lachnospira eligens_B,Streptococcus sp001556435
 Gut_Genome228006_01743,NA,3,TRUE,100060,Lachnospira eligens_B,Lachnospira sp900316325
