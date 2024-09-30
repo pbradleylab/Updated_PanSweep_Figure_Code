@@ -7,6 +7,7 @@ library(plotly)
 library(DT)
 library(knitr)
 library(kableExtra)
+library(ggrepel)
 
 PanSweep_Shiny <- function(loadData_Path){
   loadData <- read_rds(loadData_Path)
@@ -47,7 +48,7 @@ if(interactive()){
                                              actionButton("reset", "Reset")
                                              
                              ),
-                             column(10, plotlyOutput("ordination_plot"), 
+                             column(10, plotOutput("ordination_plot"), 
                                     plotlyOutput("corrMax2"), 
                                     tableOutput("mtData")
                              ),
@@ -97,7 +98,7 @@ if(interactive()){
     }
       )
     
-    output$ordination_plot <-  renderPlotly({
+    output$ordination_plot <-  renderPlot({
       if(input$ord_plt == "UMAP"){
           n_n = input$n_n
           p <- loadData$U.Sp_corr %>%
@@ -127,54 +128,40 @@ if(interactive()){
         
       }
       else if(input$ord_plt == "NMDS"){
-        top_lft <- c("UHGG063307_00097", "UHGG228006_01743", "UHGG148794_01632", "UHGG258864_02598", "UHGG000216_02074")
-        NM <- c("UHGG210928_01151", "UHGG047117_02382", "UHGG047117_02376", "UHGG047117_02379", "UHGG041746_02390", "UHGG047117_02378",
-                "UHGG047117_02377", "UHGG055467_01854", "UHGG047117_02383", "UHGG047117_02381", "UHGG047117_02380", "UHGG192308_01194", 
-                "UHGG029873_02068", "UHGG032185_00468", "UHGG047117_02375")
-          loadData$N.Sp_corr %>%
+        # top_lft <- c("UHGG063307_00097", "UHGG228006_01743", "UHGG148794_01632", "UHGG258864_02598", "UHGG000216_02074")
+        # NM <- c("UHGG210928_01151", "UHGG047117_02382", "UHGG047117_02376", "UHGG047117_02379", "UHGG041746_02390", "UHGG047117_02378",
+        #         "UHGG047117_02377", "UHGG055467_01854", "UHGG047117_02383", "UHGG047117_02381", "UHGG047117_02380", "UHGG192308_01194", 
+        #         "UHGG029873_02068", "UHGG032185_00468", "UHGG047117_02375")
+        dt_p <-  loadData$N.Sp_corr %>%
             .[[paste0(input$species_c, sep='')]] %>%
             scores() %>%
             as.data.frame() %>%
             rownames_to_column() %>%
             rename("Gene_id" = "rowname") %>%
-            mutate(Text_Position = case_when(Gene_id %in% top_lft ~ 'top left',
-                                             TRUE ~ 'top right'),
-                   label = case_when(
-                     !(Gene_id %in% NM) ~ as.character(Gene_id), TRUE ~ NA_character_)
-                   ) %>%
-            #mutate(Text_Position = ifelse(Gene_id %in% top_lft, 'top left', 'top right')) %>%
-            left_join(., loadData$Analysis_output$uhgp_90_eggNOG, "Gene_id") %>%
-            plot_ly(x = ~NMDS1, y = ~NMDS2, type = "scatter", mode = "markers",  color= ~replace(.$Predicted_taxonomic_group, is.na(.$Predicted_taxonomic_group), "NA"),
-                    text = ~label, customdata = ~paste(.$Gene_id), showlegend = TRUE, legendgroup = "markers")%>%
-            add_text(textfont = list(color = "black"), textposition = ~Text_Position, showlegend = FALSE) %>%
-            layout(plot_bgcolor = "#e5ecf6",
-                   xaxis = list(range = c(-0.25, 0.8)),
-                   yaxis = list(range = c(-0.11, 0.17)),
-                   annotations = list(text = ~paste("stress", loadData$N.Stress[[paste0(input$species_c2, sep='')]]), showarrow=FALSE)
-                   )
+            left_join(., loadData$Analysis_output$uhgp_90_eggNOG, "Gene_id")
+        
+          gp <- TEst %>% ggplot(aes(x = "NMDS1", y = "NMDS2", color = "Predicted_taxonomic_group")) +
+                  geom_point() +
+                  geom_text_repel(label = "Gene_id") +
+          annotate("text", x = 0, y = 0, label = paste("stress", loadData$N.Stress[[paste0(input$species_c2, sep='')]]), size = 5, color = "black")
+          gp
       }      
       else if(input$ord_plt == "NMDS_Zoom"){
-        top_lft <- c("UHGG063307_00097", "UHGG228006_01743", "UHGG148794_01632", "UHGG258864_02598", "UHGG041746_02390", "UHGG210928_01151", "UHGG047117_02382")
-        bt_L <- c("UHGG047117_02379")
-        
-        loadData$N.Sp_corr %>%
-          .[[paste0(input$species_c, sep='')]] %>%
+        Test <- loadData$N.Sp_corr %>%
+          .$"100060" %>%
           scores() %>%
           as.data.frame() %>%
           rownames_to_column() %>%
           rename("Gene_id" = "rowname") %>%
-          mutate(Text_Position = case_when(Gene_id %in% top_lft ~ 'top left',
-                                           Gene_id %in% bt_L ~ 'bottom left',
-                                         TRUE ~ 'top right')) %>%
-          left_join(., loadData$Analysis_output$uhgp_90_eggNOG, "Gene_id") %>%
-          plot_ly(x = ~NMDS1, y = ~NMDS2, type = "scatter", mode = "markers",  color= ~replace(.$Predicted_taxonomic_group, is.na(.$Predicted_taxonomic_group), "NA"),
-                  text = paste(.$Gene_id), customdata = ~paste(.$Gene_id), showlegend = TRUE, legendgroup = "markers")%>%
-          add_text(textfont = list(color = "black"), textposition = ~Text_Position, showlegend = FALSE) %>%
-          layout(plot_bgcolor = "#e5ecf6",
-                 xaxis = list(range = c(-0.25, -0.075)),
-                 yaxis = list(range = c(-0.085, 0)),
-                 annotations = list(text = ~paste("stress", loadData$N.Stress[[paste0(input$species_c2, sep='')]]), showarrow=FALSE)
-          )
+          left_join(., loadData$Analysis_output$uhgp_90_eggNOG, "Gene_id")
+        
+        gp <- Test %>% ggplot(aes(x = NMDS1, y = NMDS2, color = Predicted_taxonomic_group)) +
+          geom_point() +
+          geom_text_repel(label = Test$Gene_id) +
+          annotate("text", x = 0.3, y = 0.4, label = paste("stress", loadData$N.Stress$"100060"), size = 5, color = "black") 
+         # xlim(-0.55, 0.7) +
+        #  ylim(-0.35, 0.4)
+        gp
       }
       else if(input$ord_plt == "NMDS_NoM"){
         loadData$N.Sp_corr %>%
@@ -188,8 +175,8 @@ if(interactive()){
                   text = paste(.$Gene_id), customdata = ~paste(.$Gene_id), showlegend = TRUE, legendgroup = "markers")%>%
           #add_text(textfont = list(color = "black"), textposition = ~Text_Position, showlegend = FALSE) %>%
           layout(plot_bgcolor = "#e5ecf6",
-                 xaxis = list(range = c(-0.25, 0.8)),
-                 yaxis = list(range = c(-0.11, 0.17)),
+                 #xaxis = list(range = c(-0.25, 0.8)),
+                 #yaxis = list(range = c(-0.11, 0.17)),
                  annotations = list(text = ~paste("stress", loadData$N.Stress[[paste0(input$species_c2, sep='')]]), showarrow=FALSE)
           )
       }
@@ -212,15 +199,16 @@ if(interactive()){
     
     output$eNR <- renderDT({
       loadData$Analysis_output$uhgp_90_eggNOG %>%
-        select("Gene_id", "Species_id", "Species","Lineage_Shared", "cor_max_species", "Fdrs", "cluster_id", "Predicted_taxonomic_group", 
+        select("Gene_id", "Species_id", "Species","Lineage_Shared", "cor_max_species", "Sp_rank", "Family_max_rank", "Fdrs", "cluster_id", "Predicted_taxonomic_group", 
                "Predicted_protein_name", "eggNOG_free_text_description") %>%
         mutate(Fdrs = format(signif(Fdrs, 3), scientific = TRUE))%>%
-        arrange(Species_id, desc(Lineage_Shared), desc(Fdrs)) %>%
-        filter(Gene_id %in% c("UHGG210793_02030", "UHGG047117_02380", "UHGG258864_02598", "UHGG152466_01649", "UHGG047117_02376")) %>%
+        filter(Gene_id %in% c("UHGG210793_02030", "UHGG047117_02380", "UHGG258864_02598", "UHGG152466_01649", "UHGG047117_02377")) %>%
         rename("Gene ID" = "Gene_id", "Species ID" = "Species_id", "Lineage Shared" = "Lineage_Shared", 
-               "Species with Max Correlation Value" = "cor_max_species", "Cluster ID" = "cluster_id","EggNOG Predicted taxonomic group" = "Predicted_taxonomic_group",
+               "Species with Max Correlation Value" = "cor_max_species", "Species Correlation Rank" = "Sp_rank", "Family Correlation Rank" = "Family_max_rank",
+               "Cluster ID" = "cluster_id","EggNOG Predicted taxonomic group" = "Predicted_taxonomic_group",
                "Predicted protein name" = "Predicted_protein_name", 
-               "eggNOG free text description" = "eggNOG_free_text_description")
+               "eggNOG free text description" = "eggNOG_free_text_description") %>%
+        arrange("Species ID", desc(Fdrs), "Lineage Shared")
     })
     
     output$AnaR <- renderDT({
