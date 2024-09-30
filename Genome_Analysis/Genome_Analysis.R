@@ -13,6 +13,8 @@ G_G100060_path <- paste0(Base_path,"Sig_Genes_Pangenomes_100060.csv")
 G_G100271_path <- paste0(Base_path,"Sig_Genes_Pangenomes_100271.csv")
 G_G100078_path <- paste0(Base_path,"Sig_Genes_Pangenomes_100078.csv")
 G_G102528_path <- paste0(Base_path,"Sig_Genes_Pangenomes_102528.csv")
+G_G100217_path <- paste0(Base_path,"Sig_Genes_Pangenomes_100217.csv")
+G_G101380_path <- paste0(Base_path,"Sig_Genes_Pangenomes_101380.csv")
 
 Egg_load <- paste0(Base_path2, "uhgp_90_eggNOG.tsv")
 
@@ -31,10 +33,12 @@ G_G100060 <- read_csv(file = G_G100060_path)
 G_G100271 <- read_csv(file = G_G100271_path)
 G_G100078 <- read_csv(file = G_G100078_path)
 G_G102528 <- read_csv(file = G_G102528_path)
+G_G100217 <- read_csv(file = G_G100217_path)
+G_G101380 <- read_csv(file = G_G101380_path)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Now we will clean, select, and concatenate:
-DFg_n <- c("G_G102528", "G_G100078", "G_G100271", "G_G100060")
-DFs_g <- list(G_G102528, G_G100078, G_G100271, G_G100060) %>% set_names(DFg_n)
+DFg_n <- c("G_G102528", "G_G100078", "G_G100271", "G_G100060", "G_G100217", "G_G101380")
+DFs_g <- list(G_G102528, G_G100078, G_G100271, G_G100060, G_G100217, G_G101380) %>% set_names(DFg_n)
 #Create gene_id column:
 Dfs_g <- lapply(DFs_g, function(x){
   x <- x %>%
@@ -50,8 +54,8 @@ Gene_Genome_Analysis <- Genes_isolates %>%
                              "Lineage_Shared", "cor_max_species")), by = "Gene_id")
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #Isolate or MAG for each Gene:
-DFg_l <- list("G_G102528", "G_G100078", "G_G100271", "G_G100060")
-DFs_g <- list(G_G102528, G_G100078, G_G100271, G_G100060) %>% set_names(DFg_l)
+DFg_l <- list("G_G102528", "G_G100078", "G_G100271", "G_G100060", "G_G100217", "G_G101380")
+DFs_g <- list(G_G102528, G_G100078, G_G100271, G_G100060, G_G100217, G_G101380) %>% set_names(DFg_l)
 
 DF_g_l <- DFs_g %>%
   lapply(function(x){
@@ -190,5 +194,14 @@ p3 <- ggplot(ContValues, aes(Contamination, fill = Gene, color = Gene)) +
    summarise(
      min = min(Contamination),
      max = max(Contamination),
-     mean = mean(Contamination)
+     mean = mean(Contamination),
+     median = median(Contamination)
    )
+ ##############################################################################
+ #Make Gene_Genome_Type_Counts With Additional Metadata & BLAST Results:
+
+  BLST <- read_csv(file = paste0(Base_path, "BLAST_RSLT.csv"))
+ G_G_Egg_BLST <-  Gene_Genome_Type_Counts_with_Meta_eggNOG %>%
+   left_join(BLST, by = c("Num" = "Gene_id"))
+
+ write_csv(G_G_Egg_BLST, file = paste0(Base_path, "Gene_Genome_Analysis_with_EggNOG_and_BLAST.csv"))
