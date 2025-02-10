@@ -10,17 +10,15 @@ Base_path2 <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updat
 Base_path3 <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/"
 
 path_for_genomes_all_metadata <- paste0(Base_path3, "Metadata/Genome_metadata/metadata.tsv")
-
-path_for_Species_Abundance <- paste0(Base_path3, "PanSweep_Analysis_Updated/data/species/species_marker_read_counts.tsv")
-
+path_for_species_abundance <- paste0(Base_path3, "PanSweep_Analysis_Updated/data/species/species_marker_read_counts.tsv")
 path_for_sample_metadata <- paste0(Base_path3, "Sample_meta.tsv")
-
-path_for_gene_reads <- paste0(Base_path2, "Sig_Gene_Reads.rds")
+path_for_gene_reads <- paste0(Base_path2, "Sig_Gene_reads.rds")
 path_to_cor_org_species <- paste0(Base_path2, "Species_id_cor_and_orig.rds")
 Egg_load <- paste0(Base_path2, "uhgp_90_eggNOG.tsv")
+path_phylo_md2 <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/Review_Response/cirr_md.tsv"
 
 #Saving#
-Graph_Save_Dir <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Updated_PanSweep_Figure_Code/Gene_Corr_Graphs/Figure1"
+Graph_Save_Dir <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/Review_Response/Figure1/"
 Supp_Graph_Save_Dir <- "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Updated_PanSweep_Figure_Code/Gene_Corr_Graphs/Sup"
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -51,7 +49,9 @@ meta_genome_sep_taxa <- genome_metadata %>% separate_taxonomy_with_s("Lineage") 
 library(PanSweep)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
                           #Load in Species abundance#
-Species_Abd <-read_tsv(path_to_species_abundance) %>%
+phylo_md2 <- read_tsv(path_phylo_md2, show_col_types = FALSE)
+merge_fn_counts = base::sum
+Species_Abd <-read_tsv(path_for_species_abundance) %>%
   merge_columns_tbl(md=phylo_md2, fn=merge_fn_counts) %>%
   pivot_longer(!species_id, names_to = "subject", values_to = "species_count") %>% 
   pivot_wider(names_from = "species_id", values_from = "species_count") %>% column_to_rownames("subject")
@@ -68,103 +68,65 @@ SIG_Gene_Reads <- lapply(names(SGR), function(x){
                             #Load in  Sample Metadata#
 sample_meta <- read_tsv(path_for_sample_metadata)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-                            #Create Figure 1 Graphs#
-SpAb_VA <- Species_Abd %>% select('101444') %>% rownames_to_column("subject")
-colnames(SpAb_VA) <- c("subject","V.atypica")
-SpAb_Le <- Species_Abd %>% select('100060') %>% rownames_to_column("subject")
-colnames(SpAb_Le) <- c("subject","Le")
+                          #Create Plots for figure 1#
+sp_reads_mtx <- t(Species_Abd)
+colnames(sp_reads_mtx) <- gsub("-", "", colnames(sp_reads_mtx))
+lel_reads_mtx <- t(SIG_Gene_Reads$`100060`)
+cols_both <- intersect(colnames(sp_reads_mtx), colnames(lel_reads_mtx))
 
-Slct_Gns <- SIG_Gene_Reads$'100060' %>% rownames_to_column("subject")
-
-Graph_tbl <- Slct_Gns %>% left_join(SpAb_VA, by = 'subject') %>% left_join(SpAb_Le, by = 'subject')
-
-log_Plot <- Graph_tbl %>%
-  mutate(across(-c("subject"), ~ log(.x +1, base = 10)))
-
-log_grph_df_meta <- log_Plot %>% left_join(sample_meta, by = c("subject" = "subject"))
-
-
-
-Cont_Gene <- log_grph_df_meta %>% select(c("subject", "Le", "V.atypica", "UHGG047117_02377", "env"))
-Org_Gene <- log_grph_df_meta %>% select(c("subject", "Le", "V.atypica", "UHGG152466_01649", "env"))
-
-Plot1 <- ggplot(Cont_Gene, aes(x = V.atypica, y = UHGG047117_02377, shape = factor(env))) +
-  geom_point(size = 5, color = "orange") +
-  geom_smooth(method = "loess", color = "gray28", aes(group = 1)) +
-  guides(
-    color = guide_legend(override.aes = list(linetype = 0)),  # Combined legend title
-    shape = guide_legend(override.aes = list(linetype = 0))  # Combined legend title
-  ) +
-  #scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = c("0", "1.0", "2.0", "3.0", "4.0", "5.0")) +
-  scale_y_continuous(limits = c(0, 2.5), breaks = seq(0, 2.5, 0.5), labels = c("0","0.5", "1.0","1.5", "2.0","2.5")) +
-  labs(
-    x = NULL,
-    y = NULL) +
-  theme(legend.position = "none",
-        axis.text.x = element_text(size = 20), 
-        axis.text.y = element_text(size = 20))
-
-
-
-
-
-Plot2 <- ggplot(Cont_Gene, aes(x = Le, y = UHGG047117_02377, shape = factor(env))) +
-  geom_point(size = 5, color = "deepskyblue4") +
-  geom_smooth(method = "loess", color = "gray28", aes(group = 1)) +
-  guides(
-    color = guide_legend(override.aes = list(linetype = 0)),  # Combined legend title
-    shape = guide_legend(override.aes = list(linetype = 0))  # Combined legend title
-  ) +
-  #scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = c("0", "1.0", "2.0", "3.0", "4.0", "5.0")) +
-  scale_y_continuous(limits = c(0, 2.5), breaks = seq(0, 2.5, 0.5), labels = c("0","0.5", "1.0","1.5", "2.0","2.5")) +
-  labs(
-    x = NULL,
-    y = NULL) +
-  theme(legend.position = "none",
-        axis.text.x = element_text(size = 20), 
-        axis.text.y = element_text(size = 20))
-
-Plot3 <- ggplot(Org_Gene, aes(x = V.atypica, y = UHGG152466_01649, shape = factor(env))) +
-  geom_point(size = 5, color = "orange") +
-  geom_smooth(method = "loess", color = "gray28", aes(group = 1)) +
-  guides(
-    color = guide_legend(override.aes = list(linetype = 0)),  # Combined legend title
-    shape = guide_legend(override.aes = list(linetype = 0))  # Combined legend title
-  ) +
-  #scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = c("0", "1.0", "2.0", "3.0", "4.0", "5.0")) +
-  scale_y_continuous(limits = c(0, 2.5), breaks = seq(0, 2.5, 0.5), labels = c("0","0.5", "1.0","1.5", "2.0","2.5")) +
-  labs(
-    x = NULL,
-    y = NULL) +
-  theme( legend.position = "none",
-         axis.text.x = element_text(size = 20), 
-         axis.text.y = element_text(size = 20))
-
-Plot4 <- ggplot(Org_Gene, aes(x = Le, y = UHGG152466_01649, shape = factor(env))) +
-  geom_point(size = 5, color = "deepskyblue4") +
-  geom_smooth(method = "loess", color = "gray28", aes(group = 1)) +
-  guides(
-    color = guide_legend(override.aes = list(linetype = 0)),  # Combined legend title
-    shape = guide_legend(override.aes = list(linetype = 0))  # Combined legend title
-  ) +
-  #scale_x_continuous(limits = c(0, 5), breaks = seq(0, 5, 1), labels = c("0", "1.0", "2.0", "3.0", "4.0", "5.0")) +
-  scale_y_continuous(limits = c(0, 2.5), breaks = seq(0, 2.5, 0.5), labels = c("0","0.5", "1.0","1.5", "2.0","2.5")) +
-  labs(
-    x = NULL,
-    y = NULL) +
+Va_con_gf <- tibble(cols = cols_both, rank.species = dplyr::percent_rank(sp_reads_mtx["101444", cols_both]), rank.gene=dplyr::percent_rank(lel_reads_mtx["UHGG047117_02379", cols_both]), 
+                    gene.zero = lel_reads_mtx["UHGG047117_02379", cols_both] == 0) %>% left_join(sample_meta, by = c("cols" = "subject")) %>% select(-c("sample")) %>%
+  ggplot(aes(x=rank.species, y=rank.gene, shape = interaction(env, gene.zero))) + 
+  geom_point(size=5, color = "orange") +
+  geom_smooth(method='lm', color = "gray28", aes(group = 1)) +
+  scale_shape_manual(values = c("control.TRUE" = 1, "control.FALSE" = 16, "case.TRUE" = 2, "case.FALSE" = 17)) +
   theme(  legend.position = "none",
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.text.x = element_text(size = 20), 
+          axis.text.y = element_text(size = 20))
+                                                                  
+Le_con_gf <- tibble(cols = cols_both, rank.species = dplyr::percent_rank(sp_reads_mtx["100060", cols_both]), rank.gene=dplyr::percent_rank(lel_reads_mtx["UHGG047117_02379", cols_both]), 
+                    gene.zero = lel_reads_mtx["UHGG047117_02379", cols_both] == 0) %>% left_join(sample_meta, by = c("cols" = "subject")) %>% select(-c("sample")) %>%
+  ggplot(aes(x=rank.species, y=rank.gene, shape = interaction(env, gene.zero))) + 
+  geom_point(size=5, color = "deepskyblue4") +
+  geom_smooth(method='lm', color = "gray28", aes(group = 1)) +
+  scale_shape_manual(values = c("control.TRUE" = 1, "control.FALSE" = 16, "case.TRUE" = 2, "case.FALSE" = 17)) +
+  theme(  legend.position = "none",
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
           axis.text.x = element_text(size = 20), 
           axis.text.y = element_text(size = 20))
 
-Plot1
-Plot2
-Plot3
-Plot4
+Va_ncon_gf <- tibble(cols = cols_both, rank.species = dplyr::percent_rank(sp_reads_mtx["101444", cols_both]), rank.gene=dplyr::percent_rank(lel_reads_mtx["UHGG152466_01649", cols_both]), 
+                     gene.zero = lel_reads_mtx["UHGG152466_01649", cols_both] == 0) %>% left_join(sample_meta, by = c("cols" = "subject")) %>% select(-c("sample")) %>%
+  ggplot(aes(x=rank.species, y=rank.gene, shape = interaction(env, gene.zero))) + 
+  geom_point(size=5, color = "orange") +
+  geom_smooth(method='lm', color = "gray28", aes(group = 1)) +
+  scale_shape_manual(values = c("control.TRUE" = 1, "control.FALSE" = 16, "case.TRUE" = 2, "case.FALSE" = 17)) +
+  theme(  legend.position = "none",
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.text.x = element_text(size = 20), 
+          axis.text.y = element_text(size = 20))
+
+Le_ncon_gf <- tibble(cols = cols_both, rank.species = dplyr::percent_rank(sp_reads_mtx["100060", cols_both]), rank.gene=dplyr::percent_rank(lel_reads_mtx["UHGG152466_01649", cols_both]), 
+                     gene.zero = lel_reads_mtx["UHGG152466_01649", cols_both] == 0) %>% left_join(sample_meta, by = c("cols" = "subject")) %>% select(-c("sample")) %>%
+  ggplot(aes(x=rank.species, y=rank.gene, shape = interaction(env, gene.zero))) + 
+  geom_point(size=5, color = "deepskyblue4") +
+  geom_smooth(method='lm', color = "gray28", aes(group = 1)) +
+  scale_shape_manual(values = c("control.TRUE" = 1, "control.FALSE" = 16, "case.TRUE" = 2, "case.FALSE" = 17)) +
+  theme(  legend.position = "none",
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.text.x = element_text(size = 20), 
+          axis.text.y = element_text(size = 20))
+
 setwd(Graph_Save_Dir)
-ggsave("2No_Title_V.atypica_and_Contaminate_Gene.tiff", plot = Plot1, device = "tiff", width = 7.5,height=6, dpi=300, units = "in")
-ggsave("2No_Title_L.eligens_and_Contaminate_Gene.tiff", plot = Plot2, device = "tiff", width = 7.5,height=6, dpi=300, units = "in")
-ggsave("2No_Title_V.atypica_and_Non-Contaminate_Gene.tiff", plot = Plot3, device = "tiff", width = 7.5,height=6, dpi=300, units = "in")
-ggsave("2No_Title_L.eligens_and_Non-Contaminate_Gene.tiff", plot = Plot4, device = "tiff", width = 7.5,height=6, dpi=300, units = "in")
+ggsave("Final_update_V.atypica_and_Contaminate_Gene.tiff", plot = Va_con_gf, device = "tiff", width = 7.5,height=6, dpi=300, units = "in")
+ggsave("Final_update_L.eligens_and_Contaminate_Gene.tiff", plot = Le_con_gf, device = "tiff", width = 7.5,height=6, dpi=300, units = "in")
+ggsave("Final_update_V.atypica_and_Non-Contaminate_Gene.tiff", plot = Va_ncon_gf, device = "tiff", width = 7.5,height=6, dpi=300, units = "in")
+ggsave("Final_update_L.eligens_and_Non-Contaminate_Gene.tiff", plot = Le_ncon_gf, device = "tiff", width = 7.5,height=6, dpi=300, units = "in")
 #################################################################################
                               #Make Supplemental Graphs#
 setwd(Supp_Graph_Save_Dir)
