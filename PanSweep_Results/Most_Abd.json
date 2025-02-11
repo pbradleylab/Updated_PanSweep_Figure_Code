@@ -1,0 +1,22 @@
+{
+ "Variables": {
+   "Species_Set": ["102478", "102293", "101346", "103693", "103681", "101302", "101306", "100060", "100243", "102545", "101364", "100078", "100215", "100271", "101313", "101337", "100196", "103697", "102506", "102538"]
+ },
+ "Databases":{
+   "path_uhgp_50_cluster": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Parquet/UHGP_Parquet/uhgp_50_cluster",
+   "path_uhgp_90_cluster": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Parquet/UHGP_Parquet/uhgp_90_cluster",
+   "path_uhgp_50_eggNOG": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Parquet/UHGP_Parquet/uhgp_50_eggNOG",
+   "path_uhgp_90_eggNOG": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Parquet/UHGP_Parquet/uhgp_90_eggNOG"
+ },
+ "Metadata":{
+  "path_for_genomes_all_metadata": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/Metadata/Genome_metadata/metadata.tsv",
+  "path_to_sample_metadata": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/Review_Response/cirr_md.tsv",
+  "path_to_species_abundance": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/PanSweep_Updated_Data_Analysis/PanSweep_Analysis_Updated/data/species/species_marker_read_counts.tsv",
+  "path_to_presabs": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/Review_Response/Full_Gene_Files/genes/",
+  "path_to_read_counts": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/Review_Response/Full_Gene_Files/genes/",
+  "gene_data_is_compressed": true
+ },
+ "Output":{
+  "save_folder_location": "~/Documents/Bradley_Lab/MIDAS_Analysis_Main_Folder/Review_Response/PanSweep_Results/Most_Abd/"
+  }
+}
