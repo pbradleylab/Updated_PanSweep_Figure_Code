@@ -3,3 +3,5 @@ Gene_Corr_Graphs/Sup/
 Gene_Corr_Graphs/Figure1/
 **/Taxonomy_Results/
 Genome_Analysis/Percent_Contamination_in_Genomes.tiff
+/Gene_Sequences/B_thetaiotaomicron_results/BLAST_Results/
+*.tiff
